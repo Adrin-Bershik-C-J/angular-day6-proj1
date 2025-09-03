@@ -1,0 +1,59 @@
+<div class="top-bar">
+  <h2>Bugs</h2>
+  <button class="logout-btn" (click)="onLogout()">Logout</button>
+</div>
+
+<div class="filters">
+  <label>
+    Status:
+    <select [(ngModel)]="selectedStatus" (change)="filterBugs()">
+      <option value="">All</option>
+      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+    </select>
+  </label>
+
+  <label>
+    Priority:
+    <select [(ngModel)]="selectedPriority" (change)="filterBugs()">
+      <option value="">All</option>
+      <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+    </select>
+  </label>
+
+  <button class="clear-btn" (click)="clearFilters()" type="button">
+    Clear Filters
+  </button>
+</div>
+
+<div class="table-container">
+  <table class="bug-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bug of filteredBugs; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ bug.title }}</td>
+        <td>
+          <span class="status-badge" [ngClass]="statusClass(bug.status)">
+            {{ bug.status }}
+          </span>
+        </td>
+        <td>
+          <span class="priority-badge" [ngClass]="bug.priority.toLowerCase()">
+            {{ bug.priority }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!filteredBugs?.length">No bugs found.</p>
+</div>
+
+<p *ngIf="error" class="error">{{ error }}</p>
